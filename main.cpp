@@ -59,7 +59,7 @@ void toArray(int n, int l, int *digits)
 string toString(int n)
 {
 	string place[2][3] = 	{{"milion ", "miliony ", "milionów " },
-							{"tysiąc ",  "tysiące ",   "tysięcy " }};
+	{"tysiąc ",  "tysiące ",   "tysięcy " }};
 	int* rank = new int[3];    //liczymy trójki każdej starszej liczby
 	rank[0] = n / 1000000;
 	rank[1] = n/ 1000 % 1000;
@@ -71,36 +71,36 @@ string toString(int n)
 		if (rank[0] / 10 % 10 == 1) result += place[0][2]; //-1-
 		else
 			switch (rank[0] % 10)
-			{
+		{
 			case 1:
-				result += place[0][0];
-				break;
+			result += place[0][0];
+			break;
 			case 2 ... 4:
-				result += place[0][1];
-				break;
+			result += place[0][1];
+			break;
 			case 0:
 			case 5 ... 9:
-				result += place[0][2];
-				break;
-			}
+			result += place[0][2];
+			break;
+		}
 	}
 	if (rank[1] > 0)
 	{
 		result += toString3(rank[1]);
 		if (rank[1] / 10 % 10 == 1) result += place[1][2]; //-2-
 		else switch (rank[1] % 10)
-			{
+		{
 			case 1:
-				result += place[1][0];
-				break;
+			result += place[1][0];
+			break;
 			case 2 ... 4:
-				result += place[1][1];
-				break;
+			result += place[1][1];
+			break;
 			case 0:
 			case 5 ... 9:
-				result += place[1][2];
-				break;
-			}
+			result += place[1][2];
+			break;
+		}
 	}
 	result += toString3(rank[2]);
 	return result;
