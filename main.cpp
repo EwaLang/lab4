@@ -2,28 +2,101 @@
 #include <stdio.h>
 #include <string.h>
 #include <cstdlib>
+#include <math.h>
+#include <vector>
 
 using namespace std;
 
 string toString3(int n);
 void toArray(int n, int l, int *digits);
+void toArray_(int n, int l, vector<int>& v);
 string toString(int n);
+void findNumber(int n);
+int count (int n);
+bool check(int p, vector<int>& v);
 
 int main(int argc, char const *argv[])
 {
 	int number = atoi(argv[1]);
-	cout << toString(number)<<endl;
+	cout << toString(number) << endl;
+	findNumber(number);
 	return 0;
 }
 
 
+void findNumber(int n)
+{
+	int k, l, i = 1;
+	std::vector<int> v;
+	bool found = false;
+	while(!found)
+	{
+		k = n * i;
+		l = count(k);
+		toArray_(k, l, v);
+		if(check(k, v))
+		{
+			found = true;
+			cout << "Poszukiwane k to: " << i << endl;
+			cout << "czyli " << toString(i) << endl;
+			cout << "Iloczyn n*k to: " << k << endl;
+			cout << "czyli " << toString(k) << endl;
+		}
+		v.clear();
+		i++;
+	}
+}
+
+int count (int n)
+{
+	int counter = 0;
+	while (n > 0)
+	{
+		n /= 10;
+		counter++;
+	}
+	return counter;
+}
+
+void toArray_(int n, int l, vector<int>& v)
+{
+	int b = 10;
+	int w;
+	for (int i = 0; i < l; ++i)
+	{
+		w = pow(b, i);
+		v.push_back((n / w) % b);
+	}
+}
+
+bool check(int p, vector<int>& v)
+{
+	int l = v.size();
+	int counter = 0;
+	for (int i = 0; i < l; ++i)
+	{
+		if (v[i] == 1 || v[i] == 0)
+		{
+			counter++;
+		}
+	}
+	if (counter == v.size())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 string toString3(int n) //
 {
-	string ones[] = {"jeden ", "dwa ", "trzy ", "cztery ", "pięć ", "sześć ", "siedem ", "osiem ", "dziewięć "};
-	string tens[] = {"dziesięć ", "dwadzieścia ", "trzydzieści ", "czterdzieści ", "pięćdziesiąt ", "sześćdziesiąt ", "siedemdziesiąt ", "osiemdziesiąt ", "dziewięćdziesiąt "};
-	string hundreds[] = {"sto ", "dwieście ", "trzysta ", "czterysta ", "pięćset ", "sześćset ", "siedemset ", "osiemset ", "dziewięćset "};
-	string teens[] = {"jedenaście ", "dwanaście " , "trzynaście ", "czternaście ", "piętnaście ", "szesnaście ", "siedemnaście ", "osiemnaście ", "dziewiętnaście "};
-	
+	string ones[] = {"jeden ", "dwa ", "trzy ", "cztery ", "piec ", "szesc ", "siedem ", "osiem ", "dziewiec "};
+	string tens[] = {"dziesiec ", "dwadziescia ", "trzydziesci ", "czterdziesci ", "piecdziesiat ", "szescdziesiat ", "siedemdziesiat ", "osiemdziesiat ", "dziewiecdziesiat "};
+	string hundreds[] = {"sto ", "dwiescie ", "trzysta ", "czterysta ", "piecset ", "szescset ", "siedemset ", "osiemset ", "dziewiecset "};
+	string teens[] = {"jedenascie ", "dwanascie " , "trzynascie ", "czternascie ", "pietnascie ", "szesnascie ", "siedemnascie ", "osiemnascie ", "dziewietnascie "};
+
 	int* digits = new int[3];
 	toArray(n, 3, digits);
 
@@ -35,7 +108,7 @@ string toString3(int n) //
 	{
 		if ((digits[1] == 1) && (digits[2] != 0))
 		{
-			result += teens[digits[2] - 1]; 
+			result += teens[digits[2] - 1];
 			return result;
 		}
 		else result += tens[digits[1] - 1];
@@ -58,10 +131,11 @@ void toArray(int n, int l, int *digits)
 string toString(int n)
 {
 	string place[2][3] = 	{{"milion ", "miliony ", "milionów " },
-	{"tysiąc ",  "tysiące ",   "tysięcy " }};
-	int* rank = new int[3];    //liczymy trójki każdej starszej liczby
+	{"tysiac ",  "tysiace ",   "tysiecy " }
+};
+	int* rank = new int[3];    //liczymy trójki kazdej starszej liczby
 	rank[0] = n / 1000000;
-	rank[1] = n/ 1000 % 1000;
+	rank[1] = n / 1000 % 1000;
 	rank[2] = n % 1000;
 	string result = "";
 	if (rank[0] > 0)
@@ -104,4 +178,3 @@ string toString(int n)
 	result += toString3(rank[2]);
 	return result;
 }
-
